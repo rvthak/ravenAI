@@ -47,48 +47,51 @@ st.sidebar.subheader('A collection of AI tools for game developers that aims to 
 st.image(BANNERS[random.randint(0, len(BANNERS)-1)])
 
 
-
-
 with st.form("input_form"):
 
 	st.subheader("Tell us a bit about your ideas")
+	st.write("All the fields below are optional, so feel free to fill out whatever information you want. They are just here to help you get ideas, and in turn help our AI models create a better story for you. ")
 
-	# TO organize the form internals
-	col1, col2, col3 = st.columns(3)
+	title = st.text_input('Title', placeholder='An idea for a potential title for your game')
+
+	col1, col2 = st.columns(2)
 
 	with col1:
-		st.header("A cat")
-		st.image("https://static.streamlit.io/examples/cat.jpg")
+		genre_options = st.multiselect(
+		'Game Genre',
+		['Action', 'Adventure', 'Fighting', 'Platform', 'Puzzle', 'Racing', 'Role-Playing', 'Shooter', 'Simulation', 'Sports', 'Strategy', 'Other'],
+		[])
+
+		style_option = st.selectbox(
+		'Artstyle',
+		('Random', 'Realism', 'Fantasy', 'Low Poly', 'Hand-Painted', 'Cartoon', '2D Pixel Art', 'Vector' , 'Cutout' , 'Cel Shading', 'Monochromatic' ,'Flat', 'Other'))
 
 	with col2:
-		st.header("A dog")
-		st.image("https://static.streamlit.io/examples/dog.jpg")
+		other_genre = st.text_input('Other Genres')
+		other_style = st.text_input('Other Artstyle')
 
-	with col3:
-		st.header("An owl")
-		st.image("https://static.streamlit.io/examples/owl.jpg")
+	mechanics = st.text_area('Game Mechanics', value="", height=None, placeholder="ex. Shooting, Time traveling, Resource gathering, Turn-based")
 
+	world_setting = st.text_area('Describe the world setting of your game', value="", height=None, placeholder="ex. A Magical Kingdom high in the clouds that uses steampunk machines to travel the skies")
 
-
-	# Select primary and secondary colors???
-	color = st.color_picker('Pick A Color', '#00f900')
-
-	color = st.select_slider(
-    'Select a color of the rainbow',
-    options=['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
-	st.write('My favorite color is', color)
-
-	# Text inputs
-	st.text_area('large text prompt', value="", height=None, placeholder="sadasd")
-
-	title = st.text_input('Movie title', 'Life of Brian')
+	other_prompts = st.text_area('Other prompts', value="", height=None, placeholder="Other ideas you may have, or advnaced prompts")
 
 
-	slider_val = st.slider("Form slider")
-	checkbox_val = st.checkbox("Form checkbox")
+	with st.expander("More Options"):
+		prim_color = st.select_slider(
+		'Pick A Primary Color for your concept art', 
+		options=['None', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'])
+
+		sec_color = st.select_slider(
+		'Pick A Secondary Color for your concept art',
+		options=['None', 'Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indigo', 'Violet'])
+
+		people = st.text_area('Describe the people and/or the heroes that live on your world', value="", height=None, placeholder="ex. High leves that are proficient with jewlery and trade")
 
 	# Every form must have a submit button.
 	submitted = st.form_submit_button("Submit")
 	if submitted:
-		st.write("slider", slider_val, "checkbox", checkbox_val)
-
+		st.write("title", title)
+		st.write('Genre', genre_options)
+		st.write('mechanics', mechanics)
+		st.write('prim_color', prim_color)
