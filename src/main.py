@@ -59,7 +59,7 @@ with st.form("input_form"):
 	with col1:
 		genre_options = st.multiselect(
 		'Game Genre',
-		['Action', 'Adventure', 'Fighting', 'Platform', 'Puzzle', 'Racing', 'Role-Playing', 'Shooter', 'Simulation', 'Sports', 'Strategy'],
+		['Action', 'Adventure', 'Fighting', 'Platform', 'Puzzle', 'Racing', 'Base-Building', 'Survival', 'Role-Playing', 'Shooter', 'Simulation', 'Sports', 'Strategy'],
 		[])
 		style_option = st.selectbox(
 		'Art Style',
