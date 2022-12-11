@@ -26,7 +26,7 @@ st.image(image_url)
 img_data = requests.get(image_url)
 
 # Save the image to a file
-with open("temp.png", "wb") as f:
+with open("../img/temp.png", "wb") as f:
     f.write(img_data.content)
 
 # # create variation of that image 
