@@ -157,25 +157,65 @@ if submitted:
 
 			firstResponse = response['choices'][0]['text']
 
-			# firstResponse = "The game takes place in a vast and dangerous low-poly world. The player is a brave leader of a small group of survivors, who are determined to make a stand against the forces of evil. The player begins by scavenging for resources, such as rocks, iron, gold, and wood, which can then be used to build a base castle. The player can upgrade their castle, by adding walls, towers, and other defensive structures, as well as training and equipping soldiers to fight the enemy. As the game progresses, the player must manage their resources carefully, as they will be needed to survive the onslaught of the enemy. The player must also explore the world, searching for new resources, and discovering secrets and hidden areas. As the days pass, the enemy forces grow stronger and more numerous. Eventually, the player will have to face a massive enemy attack, which they must survive if they are to win the game. The player will have to use all of their wits and resources to survive the enemy onslaught and win the game. If they are successful, they will be rewarded with fame and glory, and will be remembered as a hero who saved the world from evil."	
-			# print(firstResponse)
-
 			st.write("## Game Description")
 			st.write(firstResponse)
+
+			if sec_color != 'None':
+				firstResponse = "The secondary color is " + sec_color + ". " + firstResponse
+
+			if prim_color != 'None':
+				firstResponse = "The primary color is " + prim_color + ". " + firstResponse
+			
 
 			# create a new image with given description
 			response = openai.Image.create(
 				prompt = firstResponse[:1000],
-				n=2,
+				n=4,
 				size = "1024x1024"
 			)
 			
-			st.write("## Concept art")
+			st.write("## Concept art of the Game")
 			col1, col2 = st.columns(2)
 			with col1:
 				st.image(response['data'][0]['url'])
+				st.image(response['data'][2]['url'])
 			with col2:
 				st.image(response['data'][1]['url'])
+				st.image(response['data'][3]['url'])
+
+			
+			if world_setting != None and world_setting != "":
+				prompt = "A description of the world the game takes place in is " + world_setting + ". "
+
+				if prim_color != 'None':
+					prompt += "The primary color is " + prim_color + ". "
+
+				if sec_color != 'None':
+					prompt += "The secondary color is " + sec_color + ". "
+
+				if style_option != None and style_option != "":
+					if style_option != "-":
+						if style_option == "Random":
+							styleList = STYLE_OPTIONS
+							style_option = styleList[random.randint(0, len(styleList)-1)]
+						prompt += " The art style is " + style_option
+						if other_style != None and other_style != "":
+							prompt += " and " + other_style
+						prompt += ". "
+
+				response = openai.Image.create(
+					prompt = prompt,
+					n=2,
+					size = "1024x1024"
+				)
+				
+				st.write("## Concept art of the Game World")
+				col1, col2 = st.columns(2)
+				with col1:
+					st.image(response['data'][0]['url'])
+				with col2:
+					st.image(response['data'][1]['url'])
+
 
 	except:
 		st.error('Failed to generate concept art for your provided promp.', icon="🚨")
