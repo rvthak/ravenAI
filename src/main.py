@@ -139,42 +139,54 @@ with st.form("input_form"):
 
 
 if submitted:
-	st.write(prompt)
+	# st.write(prompt)
 	submitted = False
 
+	try:
+	
+		with st.spinner('Creating your game...'):
+			response = openai.Completion.create(
+			engine="text-davinci-003",
+			prompt=prompt,
+			temperature=0.4,
+			max_tokens=1000,
+			top_p=1.0,
+			frequency_penalty=0.0,
+			presence_penalty=0.0
+			)
 
-		# response = openai.Completion.create(
-		# engine="text-davinci-003",
-		# prompt=prompt,
-		# temperature=0.4,
-		# max_tokens=1000,
-		# top_p=1.0,
-		# frequency_penalty=0.0,
-		# presence_penalty=0.0
-		# )
+			firstResponse = response['choices'][0]['text']
 
-		# firstResponse = response['choices'][0]['text']
+			# firstResponse = "The game takes place in a vast and dangerous low-poly world. The player is a brave leader of a small group of survivors, who are determined to make a stand against the forces of evil. The player begins by scavenging for resources, such as rocks, iron, gold, and wood, which can then be used to build a base castle. The player can upgrade their castle, by adding walls, towers, and other defensive structures, as well as training and equipping soldiers to fight the enemy. As the game progresses, the player must manage their resources carefully, as they will be needed to survive the onslaught of the enemy. The player must also explore the world, searching for new resources, and discovering secrets and hidden areas. As the days pass, the enemy forces grow stronger and more numerous. Eventually, the player will have to face a massive enemy attack, which they must survive if they are to win the game. The player will have to use all of their wits and resources to survive the enemy onslaught and win the game. If they are successful, they will be rewarded with fame and glory, and will be remembered as a hero who saved the world from evil."	
+			# print(firstResponse)
 
-		# firstResponse = "The game takes place in a vast and dangerous low-poly world. The player is a brave leader of a small group of survivors, who are determined to make a stand against the forces of evil. The player begins by scavenging for resources, such as rocks, iron, gold, and wood, which can then be used to build a base castle. The player can upgrade their castle, by adding walls, towers, and other defensive structures, as well as training and equipping soldiers to fight the enemy. As the game progresses, the player must manage their resources carefully, as they will be needed to survive the onslaught of the enemy. The player must also explore the world, searching for new resources, and discovering secrets and hidden areas. As the days pass, the enemy forces grow stronger and more numerous. Eventually, the player will have to face a massive enemy attack, which they must survive if they are to win the game. The player will have to use all of their wits and resources to survive the enemy onslaught and win the game. If they are successful, they will be rewarded with fame and glory, and will be remembered as a hero who saved the world from evil."
-		
-		# print(firstResponse)
-		# st.write(firstResponse)
+			st.write("## Game Description")
+			st.write(firstResponse)
 
-		# # create a new image with given description
-		# response = openai.Image.create(
-		# 	prompt = firstResponse[:1000],
-		# 	n=1,
-		# 	size = "256x256"
-		# )
-		# image_url = response['data'][0]['url']
+			# create a new image with given description
+			response = openai.Image.create(
+				prompt = firstResponse[:1000],
+				n=2,
+				size = "1024x1024"
+			)
+			
+			st.write("## Concept art")
+			col1, col2 = st.columns(2)
+			with col1:
+				st.image(response['data'][0]['url'])
+			with col2:
+				st.image(response['data'][1]['url'])
 
-		# print(image_url)
-		# st.write("## Created image")
-		# st.image(image_url)
+	except:
+		st.error('Failed to generate concept art for your provided promp.', icon="🚨")
+		pass
 
-		# # Download the image from the URL
-		# img_data = requests.get(image_url)
+	# st.success('Done!')
 
-		# # Save the image to a file
-		# with open("../img/image.png", "wb") as f:
-		# 	f.write(img_data.content)
+
+	# # Download the image from the URL
+	# img_data = requests.get(image_url)
+
+	# # Save the image to a file
+	# with open("../img/image.png", "wb") as f:
+	# 	f.write(img_data.content)
