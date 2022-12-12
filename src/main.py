@@ -3,10 +3,11 @@ import streamlit as st
 import os
 import openai
 import random
-from params import BANNERS, TITLE, LOGO, LOGO_BANNER, API_KEY
+from params import BANNERS, TITLE, LOGO, LOGO_BANNER, API_KEY, GENRE_OPTIONS, STYLE_OPTIONS
 
 openai.api_key = API_KEY
-
+prompt = ""
+submitted = False
 # =============================================================================================================
 #       Configuration
 # =============================================================================================================
@@ -30,11 +31,7 @@ st.sidebar.image(LOGO_BANNER)
 st.sidebar.title(TITLE)
 st.sidebar.subheader('A collection of AI tools for game developers that aims to inspire new game ideas and consepts.')
 
-#  --- IDEA -- Like a navbar
-# if st.sidebar.button('Say hello'):
-#     st.sidebar.write('Why hello there')
-# else:
-#     st.sidebar.write('Goodbye')
+# random_button = st.sidebar.button('Need inspiration? Start with a random story!')
 
 
 
@@ -42,16 +39,20 @@ st.sidebar.subheader('A collection of AI tools for game developers that aims to 
 #       Main Content
 # =============================================================================================================
 
-
-# st.title(TITLE)
-# st.subheader('A collection of tools for game developers that aims to inspire new game ideas and consepts.')
 st.image(BANNERS[random.randint(0, len(BANNERS)-1)])
 
 
+# if random_button:
+# 	prompt = "Generate a long and detailed story for a video game. "
+# 	prompt += " It's genre is " + GENRE_OPTIONS[random.randint(0, len(GENRE_OPTIONS)-1)] + ". "
+# 	prompt += " The art style is " + STYLE_OPTIONS[random.randint(0, len(STYLE_OPTIONS)-1)] + ". "
+# 	submitted = True
+
 with st.form("input_form"):
 
-	st.subheader("Tell us a bit about your ideas")
+	st.subheader("Tell us a bit about your game ideas")
 	st.write("All the fields below are optional, so feel free to fill out whatever information you want. They are just here to help you get ideas, and in turn help our AI models create a better story for you. ")
+
 
 	title = st.text_input('Title', placeholder='An idea for a potential title for your game')
 
@@ -60,11 +61,11 @@ with st.form("input_form"):
 	with col1:
 		genre_options = st.multiselect(
 		'Game Genre',
-		['Action', 'Adventure', 'Fighting', 'Platform', 'Puzzle', 'Racing', 'Base-Building', 'Survival', 'Role-Playing', 'Shooter', 'Simulation', 'Sports', 'Strategy'],
+		GENRE_OPTIONS,
 		[])
 		style_option = st.selectbox(
 		'Art Style',
-		('Random', 'Realism', 'Fantasy', 'Low Poly', 'Hand-Painted', 'Cartoon', '2D Pixel Art', 'Vector' , 'Cutout' , 'Cel Shading', 'Monochromatic' ,'Flat'))
+		STYLE_OPTIONS)
 
 	with col2:
 		other_genre = st.text_input('Other Genres')
@@ -92,54 +93,59 @@ with st.form("input_form"):
 	submitted = st.form_submit_button("Submit")
 	if submitted:
 		# st.write("title", title)
-		startText = "Generate a long and detailed story for a video game. "
+		prompt = "Generate a long and detailed story for a video game. "
 		if title != None and title != "":
-			startText += "The game's title is " + title + ". "
+			prompt += "The game's title is " + title + ". "
 
 		if len(genre_options) != 0 and genre_options != None:
 			print(len(genre_options))
-			startText += " It's genre is "
-			startText += genre_options[0]
+			prompt += " It's genre is "
+			prompt += genre_options[0]
 			if len(genre_options) > 1:
 				genre_options.pop(0)
 				concatGenre = ""
 				for genre in genre_options:
 					concatGenre += " and " + genre
-				startText += concatGenre
+				prompt += concatGenre
 			
 			if other_genre != None and other_genre != "":
-				startText += " and " + other_genre	
-			startText += ". "
+				prompt += " and " + other_genre	
+			prompt += ". "
 		
 		if style_option != None and style_option != "":
-			if style_option == "Random":
-				styleList = ['Realism', 'Fantasy', 'Low Poly', 'Hand-Painted', 'Cartoon', '2D Pixel Art', 'Vector' , 'Cutout' , 'Cel Shading', 'Monochromatic' ,'Flat']
-				style_option = styleList[random.randint(0, len(styleList)-1)]
-			startText += " The art style is " + style_option
-			if other_style != None and other_style != "":
-				startText += " and " + other_style
-			startText += ". "
+			if style_option != "-":
+				if style_option == "Random":
+					styleList = STYLE_OPTIONS
+					style_option = styleList[random.randint(0, len(styleList)-1)]
+				prompt += " The art style is " + style_option
+				if other_style != None and other_style != "":
+					prompt += " and " + other_style
+				prompt += ". "
 		
 		if mechanics != None and mechanics != "":
-			startText += "An example of game mechanics is " + mechanics + ". "
+			prompt += "An example of game mechanics is " + mechanics + ". "
 		
 		if world_setting != None and world_setting != "":
-			startText += "A description of the world the game takes place in is " + world_setting + ". "
+			prompt += "A description of the world the game takes place in is " + world_setting + ". "
 
 		if other_prompts != None and other_prompts != "":
-			startText += other_prompts + ". "
+			prompt += other_prompts + ". "
 		
 		if people != None and people != "":
-			startText += "The people that live in game's world are described as " + people + ". "
+			prompt += "The people that live in game's world are described as " + people + ". "
 		
-		startText += "\n\n"
-		print(startText)
+		prompt += "\n\n"
 
+
+
+if submitted:
+	st.write(prompt)
+	submitted = False
 
 
 		# response = openai.Completion.create(
 		# engine="text-davinci-003",
-		# prompt=startText,
+		# prompt=prompt,
 		# temperature=0.4,
 		# max_tokens=1000,
 		# top_p=1.0,
@@ -149,26 +155,26 @@ with st.form("input_form"):
 
 		# firstResponse = response['choices'][0]['text']
 
-		firstResponse = "The game takes place in a vast and dangerous low-poly world. The player is a brave leader of a small group of survivors, who are determined to make a stand against the forces of evil. The player begins by scavenging for resources, such as rocks, iron, gold, and wood, which can then be used to build a base castle. The player can upgrade their castle, by adding walls, towers, and other defensive structures, as well as training and equipping soldiers to fight the enemy. As the game progresses, the player must manage their resources carefully, as they will be needed to survive the onslaught of the enemy. The player must also explore the world, searching for new resources, and discovering secrets and hidden areas. As the days pass, the enemy forces grow stronger and more numerous. Eventually, the player will have to face a massive enemy attack, which they must survive if they are to win the game. The player will have to use all of their wits and resources to survive the enemy onslaught and win the game. If they are successful, they will be rewarded with fame and glory, and will be remembered as a hero who saved the world from evil."
+		# firstResponse = "The game takes place in a vast and dangerous low-poly world. The player is a brave leader of a small group of survivors, who are determined to make a stand against the forces of evil. The player begins by scavenging for resources, such as rocks, iron, gold, and wood, which can then be used to build a base castle. The player can upgrade their castle, by adding walls, towers, and other defensive structures, as well as training and equipping soldiers to fight the enemy. As the game progresses, the player must manage their resources carefully, as they will be needed to survive the onslaught of the enemy. The player must also explore the world, searching for new resources, and discovering secrets and hidden areas. As the days pass, the enemy forces grow stronger and more numerous. Eventually, the player will have to face a massive enemy attack, which they must survive if they are to win the game. The player will have to use all of their wits and resources to survive the enemy onslaught and win the game. If they are successful, they will be rewarded with fame and glory, and will be remembered as a hero who saved the world from evil."
 		
-		print(firstResponse)
-		st.write(firstResponse)
+		# print(firstResponse)
+		# st.write(firstResponse)
 
-		# create a new image with given description
-		response = openai.Image.create(
-			prompt = firstResponse[:1000],
-			n=1,
-			size = "256x256"
-		)
-		image_url = response['data'][0]['url']
+		# # create a new image with given description
+		# response = openai.Image.create(
+		# 	prompt = firstResponse[:1000],
+		# 	n=1,
+		# 	size = "256x256"
+		# )
+		# image_url = response['data'][0]['url']
 
-		print(image_url)
-		st.write("## Created image")
-		st.image(image_url)
+		# print(image_url)
+		# st.write("## Created image")
+		# st.image(image_url)
 
-		# Download the image from the URL
-		img_data = requests.get(image_url)
+		# # Download the image from the URL
+		# img_data = requests.get(image_url)
 
-		# Save the image to a file
-		with open("../img/image.png", "wb") as f:
-			f.write(img_data.content)
+		# # Save the image to a file
+		# with open("../img/image.png", "wb") as f:
+		# 	f.write(img_data.content)
