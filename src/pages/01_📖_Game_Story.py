@@ -114,12 +114,31 @@ with st.form("input_form"):
 
 				# Store the response for later
 				st.session_state.ai_story = ai_story
+				
+				# If title is not provided ask gpt3 
+				if title == "":
+					prompt_title = 'Write a title for a video game with this story: ' + ai_story
+					
+					response_title = openai.Completion.create(
+					engine="text-davinci-003",
+					prompt=prompt_title,
+					temperature=0.4,
+					max_tokens=1000,
+					top_p=1.0,
+					frequency_penalty=0.0,
+					presence_penalty=0.0
+					)
+
+					ai_title = response_title['choices'][0]['text'].strip()
+
+					st.session_state.title = ai_title
 
 		except:
-			st.error('Failed to generate concept art for your provided promp.', icon="🚨")
+			st.error('Failed to generate a story for your provided promp.', icon="🚨")
 			pass
 
-if st.session_state.ai_story!="":
+if st.session_state.ai_story!="" and st.session_state.title!="":
 	st.write("## Game Story")
+	st.write('__Title__: ' + st.session_state.title)
 	st.write(st.session_state.ai_story)
 	
