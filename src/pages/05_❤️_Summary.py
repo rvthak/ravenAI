@@ -91,7 +91,8 @@ if st.session_state.ai_mechanics!="":
     pdf.cell(200, 10, txt = 'Game Mechanics',
             ln = 1, align = 'L')
     pdf.set_font("Arial", size = 12)
-    pdf.multi_cell(0, 5, st.session_state.ai_mechanics)
+    text = st.session_state.ai_mechanics.encode('latin-1','ignore').decode('latin-1')
+    pdf.multi_cell(0, 5, text)
 
 # Calculate the center position of the page
 center_x = pdf.w / 2
