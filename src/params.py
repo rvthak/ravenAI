@@ -22,4 +22,4 @@ LOGO_BANNER = "../img/RavenAI_banner_2.png"
 API_KEY = "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"
 
 GENRE_OPTIONS = ['Action', 'Adventure', 'Fighting', 'Platform', 'Puzzle', 'Racing', 'Base-Building', 'Survival', 'Role-Playing', 'Shooter', 'Simulation', 'Sports', 'Strategy']
-STYLE_OPTIONS = ('-','Random', 'Realism', 'Fantasy', 'Low Poly', 'Hand-Painted', 'Cartoon', 'Pixel Art', 'Vector' , 'Cutout' , 'Cel Shading', 'Monochromatic' ,'Flat')
+STYLE_OPTIONS = ('','Random', 'Realism', 'Fantasy', 'Low Poly', 'Hand-Painted', 'Cartoon', 'Anime', 'Pixel Art', 'Vector' , 'Cutout' , 'Cel Shading', 'Monochromatic' ,'Flat')

@@ -1,2 +1,7 @@
 .env
 __pycache__
+img/ai_world_0.png
+img/ai_world_1.png
+img/ai_char_0.png
+img/ai_char_1.png
+*.pdf
