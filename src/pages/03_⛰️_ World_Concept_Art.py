@@ -1,13 +1,13 @@
 import streamlit as st
 import random
-from params import BANNERS, TITLE, LOGO, LOGO_BANNER, API_KEY, GENRE_OPTIONS, STYLE_OPTIONS
+from params import BANNERS, TITLE, LOGO, LOGO_BANNER, GENRE_OPTIONS, STYLE_OPTIONS
 from utils import multiselect_to_string, save_image
 
 from storage import storage_init
 storage_init()
 
 import openai
-openai.api_key = API_KEY
+openai.api_key = st.secrets["openai_api_key"]
 
 # =============================================================================================================
 #       Configuration

@@ -5,3 +5,4 @@ img/ai_world_1.png
 img/ai_char_0.png
 img/ai_char_1.png
 *.pdf
+.streamlit
