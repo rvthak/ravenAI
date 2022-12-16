@@ -39,6 +39,9 @@ st.sidebar.subheader('A collection of AI tools for game developers that aims to 
 st.image(BANNERS[random.randint(0, len(BANNERS)-1)])
 st.subheader("Putting it all together...")
 
+if st.session_state.title != "":
+    st.write("## " + st.session_state.title)
+
 if st.session_state.ai_story!="":
     st.write("## Game Story")
     st.write(st.session_state.ai_story)

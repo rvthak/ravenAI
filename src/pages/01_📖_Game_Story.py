@@ -131,7 +131,7 @@ with st.form("input_form"):
 
 					ai_title = response_title['choices'][0]['text'].strip()
 
-					st.session_state.title = ai_title
+					st.session_state.title = ai_title.replace('"','')
 
 		except:
 			st.error('Failed to generate a story for your provided promp.', icon="🚨")
