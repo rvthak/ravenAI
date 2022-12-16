@@ -105,16 +105,16 @@ if st.session_state.ai_world_0 != "":
     pdf.set_font("Arial", size = 18)
     pdf.cell(200, 10, txt = 'Concept art of the Game World',
             ln = 1, align = 'C')
-    pdf.image("../img/ai_world_0.png", x=center_x/2, y=40, w=100, h=100)
-    pdf.image("../img/ai_world_1.png", x=center_x/2, y=160, w=100, h=100)
+    pdf.image("./img/ai_world_0.png", x=center_x/2, y=40, w=100, h=100)
+    pdf.image("./img/ai_world_1.png", x=center_x/2, y=160, w=100, h=100)
 
 if st.session_state.ai_char_0 != "":
     pdf.add_page()
     pdf.set_font("Arial", size = 18)
     pdf.cell(200, 10, txt = 'Concept art of your character',
             ln = 1, align = 'C')
-    pdf.image("../img/ai_char_0.png", x=center_x/2, y=40, w=100, h=100)
-    pdf.image("../img/ai_char_1.png", x=center_x/2, y=160, w=100, h=100)
+    pdf.image("./img/ai_char_0.png", x=center_x/2, y=40, w=100, h=100)
+    pdf.image("./img/ai_char_1.png", x=center_x/2, y=160, w=100, h=100)
 
 pdf.output("result.pdf")  
 
